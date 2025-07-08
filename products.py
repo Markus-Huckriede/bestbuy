@@ -35,8 +35,10 @@ class Product:
     def deactivate(self):
         self.active = False
 
+
     def show(self) -> str:
         return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
+
 
     def buy(self, quantity) -> float:
         if not self.active:
