@@ -23,6 +23,8 @@ class Store:
 
     def order(self, shopping_list) -> float:
        total_price = 0
+       if len(shopping_list) == 0:
+           raise ValueError("basket empty")
        for product, quantity in shopping_list:
             total_price += product.buy(quantity)
        return total_price
