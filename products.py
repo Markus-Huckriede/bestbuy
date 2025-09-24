@@ -38,7 +38,7 @@ class Product:
 
 
     def show(self) -> str:
-        return f"{self.name}, Price: ${self.price:.2f}, Quantity: {self.quantity}"
+        return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
 
 
     def buy(self, quantity) -> float:
@@ -53,4 +53,4 @@ class Product:
         self.quantity -= quantity
         if self.quantity == 0:
             self.deactivate()
-        return total_price
+        return round(total_price, 2)
