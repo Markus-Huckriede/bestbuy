@@ -18,7 +18,7 @@ class Store:
 
 
     def get_all_products(self) -> list[Product]:
-        return self.products
+        return [product for product in self.products if product.is_active()]
 
 
     def order(self, shopping_list) -> float:
@@ -30,62 +30,28 @@ class Store:
        return total_price
 
 
-def start(store: Store):
+def make_order(store_instance: Store):
+    all_products = [p for p in store_instance.get_all_products() if p.is_active()]
+    shopping_list = []
+    print("------")
+    for i, product in enumerate(all_products, start=1):
+        print(f"{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
+    print("------")
+
     while True:
-        print("Store Menue")
-        print("-----------")
-        print("1. List all products in store")
-        print("2. Show total amount in store")
-        print("3. Make an order")
-        print("4. Quit")
-
-        choice = input("Please choose a number (1-4): ")
-
-        if choice == "1":
-            all_products = store.get_all_products()
-            for index, product in enumerate(all_products, start=1):
-                print(f"{index}. {product.show()}")
-
-        elif choice == "2":
-            print(f"Total quantity in store: {store.get_total_quantity()}")
-
-        elif choice == "3":
-            all_products = store.get_all_products()
-            shopping_list = []
-            print("------")
-            for i, product in enumerate(all_products, start=1):
-                print(f"{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
-            print("------")
-
-            while True:
-                product_input = input("When you want to finish order, enter empty text.\nWhich product # do you want? ")
-                if product_input == "":
-                    break
-                try:
-                    product_index = int(product_input) - 1
-                    amount_input = input("What amount do you want? ")
-                    amount = int(amount_input)
-                    shopping_list.append((all_products[product_index], amount))
-                    print("Product added to list!\n")
-                except (ValueError, IndexError):
-                    print("Invalid input, try again.")
-
-            try:
-                total = store.order(shopping_list)
-                print(f"Order complete! Total price: ${total}")
-            except Exception as e:
-                print(f"Order failed: {e}")
-
-        elif choice == "4":
-            print("Goodbye!")
+        product_input = input("When you want to finish order, enter empty text.\nWhich product # do you want? ")
+        if product_input == "":
             break
-        else:
-            print("Invalid choice. Please choose 1-4.")
+        try:
+            product_index = int(product_input) - 1
+            amount = int(input("What amount do you want? "))
+            shopping_list.append((all_products[product_index], amount))
+            print("Product added to list!\n")
+        except (ValueError, IndexError):
+            print("Invalid input, try again.")
 
-
-
-
-
-
-
-
+    try:
+        total = store_instance.order(shopping_list)
+        print(f"Order complete! Total price: ${total}")
+    except Exception as e:
+        print(f"Order failed: {e}")

@@ -50,7 +50,6 @@ class Product:
             raise Exception(f"Not enough '{self.name}' in stock. Available: {self.quantity}")
 
         total_price = self.price * quantity
-        self.quantity -= quantity
-        if self.quantity == 0:
-            self.deactivate()
+        self.set_quantity(self.quantity - quantity)
         return round(total_price, 2)
+
